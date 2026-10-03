@@ -195,6 +195,8 @@ def status():
         latest = [report for at, report in timed if timed[0][0] - at <= 1800][:4]
         print("\nLast worked on: %s. The request you are answering is the one these belong to: reply about it and its "
               "results, not about the first message of the conversation." % ", ".join(reversed(latest)))
+        print("This list holds only the tasks that were started: if the latest request asks for a report that is not in it, "
+              "that task is not done yet. Start it before you reply.")
     if not todo:
         print("\nGate: passed. Every task that was started has passed its gate.")
         sys.exit(0)
