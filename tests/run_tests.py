@@ -1891,6 +1891,16 @@ The rules file has two assignments in conditions and a misspelt name; it is not 
         code, out, err = run("fix_code.py", pr / "job.x", "--out", pr / "fixed2", "--log", pr / "log2.md", cwd=pr)
         check("fix: a correction whose new line adds a scan hit is refused",
               code == 3 and "adds a defect that was not there: Name read before the line that first sets it" in out, out + err)
+        sw = tmp / "switched"
+        write(sw / "job.x", "if (level == 3) {\n    log(\"dropping\");\n    // drop();\n    log(\"kept for a test\");\n}\nsend(level);\n")
+        code, out, err = run("fix_code.py", sw / "job.x", "--out", sw / "fixed", "--log", sw / "log.md", cwd=sw)
+        write(notes_for(sw / "log.md"), "## Corrections\n### lines 3-4\nafter:\n```\ndrop();\n```\nwhy: the block says it drops the "
+                                        "event, so the switched-off call is put back and the test log taken out.\n")
+        code, out, err = run("fix_code.py", sw / "job.x", "--out", sw / "fixed", "--log", sw / "log.md", cwd=sw)
+        swlog = (sw / "log.md").read_text() if (sw / "log.md").exists() else ""
+        check("fix: switching a commented-out line back on is a proposal for the owner, not applied",
+              "owner's to decide" in out and "// drop();" in (sw / "fixed" / "job.x").read_text()
+              and "was switched off in the code (commented out)" in swlog, out + err + swlog[-800:])
 
         # ---- code whose variables carry a prefix, with tables in files that it includes
         inc = tmp / "includes"

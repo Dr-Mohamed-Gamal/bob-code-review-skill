@@ -94,7 +94,7 @@ code-review/
 │   ├── diagnose.py          # from a symptom to the line
 │   └── ...                  # helpers: notes, inventory, trace, report rows, strings
 └── tests/
-    └── run_tests.py         # 668 tests on small synthetic samples
+    └── run_tests.py         # 669 tests on small synthetic samples
 ```
 
 ## Requirements

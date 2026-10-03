@@ -288,6 +288,20 @@ def main():
             if owned:
                 b["owner"] = owned[0]["question"] or "The review left this to the owner: %s" % short(owned[0]["kind"], 100)
                 b["reason"] = "the review left %s on that line to the owner" % owned[0]["id"]
+        if not b.get("owner") and not removes:   # a line that was switched off, switched back on
+            old_lines = [l.rstrip("\r") for a, z in parts for l in scan.lines[name][a - 1:z]]
+            off = {}
+            for l in old_lines:
+                s = l.strip()
+                for mark in ("//", "#", "--"):
+                    if s.startswith(mark) and s[len(mark):].strip():
+                        off[re.sub(r"\s+", " ", s[len(mark):].strip())] = s
+                        break
+            back = [l.strip() for l in new if re.sub(r"\s+", " ", l.strip()) in off]
+            if back:
+                b["owner"] = ("The line `%s` was switched off in the code (commented out); switching it back on changes "
+                              "what the code does. Should it run?" % off[re.sub(r"\s+", " ", back[0])])
+                b["reason"] = "it switches back on a line the code has switched off"
         if not b.get("owner") and not removes:   # another value in the place of a name that nothing sets
             old_text = "\n".join(l.rstrip("\r") for a, z in parts for l in scan.lines[name][a - 1:z])
             for r in covered:
