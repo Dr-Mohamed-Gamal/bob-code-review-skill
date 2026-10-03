@@ -38,7 +38,7 @@ The scripts of this skill do the work. They write every report, every corrected 
 Work from what the files show, not from what anyone says about them. When you wrote the code yourself earlier in the conversation, put that memory aside and read the files again.
 
 ## The scripts
-They are in the `scripts` folder next to this file; the commands below are written as `scripts/run.py`, so when you run them from another folder, put the path of this skill's folder in front. They read code as text, in any language (in a web page, its scripts and event attributes), need only Python, and give the same output every time. Where a workspace holds more than one body of code, each in its own folder with its own documents, give every path with that folder in front: the scripts then use the documents of that code only, and print the ones they left out.
+They are in the `scripts` folder next to this file; the commands below are written as `scripts/run.py`, so when you run them from another folder, put the path of this skill's folder in front. They read code as text, in any language (in a web page, its scripts and event attributes), need only Python, and give the same output every time. Where a workspace holds more than one body of code, each in its own folder with its own documents, give every path with that folder in front: the scripts then use the documents of that code only, and print the ones they left out. Give a command the file the request names, not the folder it is in: other files next to it (lookup tables, includes, data) are context to read when needed, not code to review. Give a folder only when the request names the folder, or the code is spread over its files.
 
 | Command | What it does |
 |---|---|
